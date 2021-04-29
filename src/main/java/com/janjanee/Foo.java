@@ -1,41 +1,25 @@
 package com.janjanee;
 
-import java.util.function.*;
 
-public class Foo {
+public interface Foo  {
 
-    public static void main(String[] args) {
-        Foo foo = new Foo();
-        foo.run();
+    void printValue();
+
+    /**
+     * @implSpec
+     * getValue()으로 가져온 문자열을 소문자로 바꿔 출력한다.
+     */
+    default void printValueLowerCase() {
+        System.out.println(getValue().toLowerCase());
     }
 
-    private void run() {
-        int baseNumber = 10;
+    default void print() {
+        System.out.println("foo");
+    }
 
-        // 로컬 클래스
-        class LocalClass {
-            void printBaseNumber() {
-                int baseNumber = 11;
-                System.out.println(baseNumber);     //  11
-            }
-        }
+    String getValue();
 
-        // 익명 클래스
-        Consumer<Integer> consumer = new Consumer<Integer>() {
-            @Override
-            public void accept(Integer baseNumber) {
-                System.out.println(baseNumber);     //  100
-            }
-        };
-
-        // 람다
-        IntConsumer printInt = i -> System.out.println(i + baseNumber);
-
-        LocalClass localClass = new LocalClass();
-        localClass.printBaseNumber();
-
-        consumer.accept(100);
-        printInt.accept(10);
-
+    static void printHello() {
+        System.out.println("Hello");
     }
 }
