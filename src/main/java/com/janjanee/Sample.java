@@ -1,59 +1,39 @@
 package com.janjanee;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
+import java.util.IntSummaryStatistics;
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Sample {
     public static void main(String[] args) {
-        Stream<String> stream = Stream.of("a", "b", "c");
+        List<Coffee> starbucksCoffee = new ArrayList<>();
+        starbucksCoffee.add(new Coffee(1, "caffe americano", false));
+        starbucksCoffee.add(new Coffee(2, "caffe latte", false));
+        starbucksCoffee.add(new Coffee(3, "cold brew", false));
+        starbucksCoffee.add(new Coffee(4, "dolce cold brew", true));
+        starbucksCoffee.add(new Coffee(5, "vanilla cream cold brew", true));
 
-        stream.forEach(System.out::println);
+        Stream<Integer> integerStream = starbucksCoffee.stream().map(Coffee::getId);
+        IntStream intStream = starbucksCoffee.stream().mapToInt(Coffee::getId);
 
-        stream = Stream.of(new String[]{"d", "e", "f"});
+        IntSummaryStatistics stat = intStream.summaryStatistics();
+        System.out.println(stat.getMax());
+        System.out.println(stat.getAverage());
+        System.out.println(stat.getSum());
 
-        stream.forEach(System.out::println);
+        Stream<Integer> boxed = intStream.boxed();
+        Stream<String> stringStream = intStream.mapToObj(s -> s + "");
 
-        stream = Arrays.stream(new String[]{"g", "h", "i"});
+        Stream<String[]> strArrStrm = Stream.of(
+                new String[]{"apple", "banana", "mango"},
+                new String[]{"cat", "dog", "horse"}
+        );
 
-        stream.forEach(System.out::println);
+        Stream<Stream<String>> strStrStrm = strArrStrm.map(Arrays::stream);
+        Stream<String> strStream = strArrStrm.flatMap(Arrays::stream);
 
-        IntStream intStream = IntStream.of(1, 5, 10, 8);
-        intStream.forEach(System.out::println);
-
-        intStream = new Random().ints(0, 11);
-        intStream.limit(5).forEach(System.out::println);
-
-        Stream<Integer> evenStream = Stream.iterate(0, n -> n + 2);
-        evenStream.limit(5).forEach(System.out::println);
-
-        Stream<Integer> oneStream = Stream.generate(() -> 1);
-        oneStream.limit(2).forEach(System.out::println);
-
-
-        Stream empty = Stream.empty();
-        long count = empty.count();
-        System.out.println(count);
-
-        String[] str1 = {"123", "456", "789"};
-        String[] str2 = {"abc", "def", "ghi"};
-
-        Stream<String> strStream1 = Stream.of(str1);
-        Stream<String> strStream2 = Stream.of(str2);
-        Stream<String> concatStream = Stream.concat(strStream1, strStream2);
-
-        IntStream intStream1 = IntStream.rangeClosed(1, 10);
-        intStream1.filter(i -> i % 2 == 0).forEach(System.out::println);
-
-        IntStream intStream2 = IntStream.of(1, 2, 3, 4, 5, 6, 6, 6, 7, 3, 4);
-        intStream2.distinct()
-                .filter(i -> i % 2 == 0)
-                .forEach(System.out::println);
-
-        Stream<String> sortStream = Stream.of("e", "d", "a", "b", "c", "f");
-        sortStream.sorted(Comparator.reverseOrder())
-                .forEach(System.out::println);
     }
 }
