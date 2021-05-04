@@ -1,6 +1,7 @@
 package com.janjanee;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -44,6 +45,15 @@ public class Sample {
         Stream<String> concatStream = Stream.concat(strStream1, strStream2);
 
         IntStream intStream1 = IntStream.rangeClosed(1, 10);
-        intStream1.skip(3).limit(5).forEach(System.out::println);
+        intStream1.filter(i -> i % 2 == 0).forEach(System.out::println);
+
+        IntStream intStream2 = IntStream.of(1, 2, 3, 4, 5, 6, 6, 6, 7, 3, 4);
+        intStream2.distinct()
+                .filter(i -> i % 2 == 0)
+                .forEach(System.out::println);
+
+        Stream<String> sortStream = Stream.of("e", "d", "a", "b", "c", "f");
+        sortStream.sorted(Comparator.reverseOrder())
+                .forEach(System.out::println);
     }
 }
