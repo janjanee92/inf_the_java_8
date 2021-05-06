@@ -1,6 +1,7 @@
 package com.janjanee;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -13,31 +14,14 @@ public class Sample {
         starbucksCoffee.add(new Coffee(4, "dolce cold brew", true));
         starbucksCoffee.add(new Coffee(5, "vanilla cream cold brew", true));
 
-        Stream<Integer> integerStream = starbucksCoffee.stream().map(Coffee::getId);
-        IntStream intStream = starbucksCoffee.stream().mapToInt(Coffee::getId);
+        IntStream lottoStream = new Random().ints(1, 46).distinct().limit(6);
+        Optional<Integer> collect = lottoStream.boxed()
+                .collect(Collectors.reducing(Integer::max));
+        System.out.println(collect.get());
 
-        IntSummaryStatistics stat = intStream.summaryStatistics();
-        System.out.println(stat.getMax());
-        System.out.println(stat.getAverage());
-        System.out.println(stat.getSum());
-
-        Stream<Integer> boxed = intStream.boxed();
-        Stream<String> stringStream = intStream.mapToObj(s -> s + "");
-
-        Stream<String[]> strArrStrm = Stream.of(
-                new String[]{"apple", "banana", "mango"},
-                new String[]{"cat", "dog", "horse"}
-        );
-
-        Stream<Stream<String>> strStrStrm = strArrStrm.map(Arrays::stream);
-        Stream<String> strStream = strArrStrm.flatMap(Arrays::stream);
-
-        boolean result = starbucksCoffee.stream()
-                .anyMatch(c -> c.getName().contains("cold"));
-
-        long count = starbucksCoffee.stream()
-                .filter(c -> c.getName().startsWith("caffee"))
-                .count();
+        int sum = starbucksCoffee.stream()
+                .collect(Collectors.reducing(0, Coffee::getId, Integer::sum));
+        System.out.println(sum);
 
 
     }
