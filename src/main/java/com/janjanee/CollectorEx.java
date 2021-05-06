@@ -7,9 +7,14 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 public class CollectorEx {
     public static void main(String[] args) {
+        String[] sArr = { "hello", "cat", "dog" };
+        Stream<String> sStream = Stream.of(sArr);
+        String result = sStream.collect(new ConcatCollector());
+        System.out.println(result);
 
     }
 }
