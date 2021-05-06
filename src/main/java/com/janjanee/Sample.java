@@ -1,9 +1,6 @@
 package com.janjanee;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.IntSummaryStatistics;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -34,6 +31,14 @@ public class Sample {
 
         Stream<Stream<String>> strStrStrm = strArrStrm.map(Arrays::stream);
         Stream<String> strStream = strArrStrm.flatMap(Arrays::stream);
+
+        boolean result = starbucksCoffee.stream()
+                .anyMatch(c -> c.getName().contains("cold"));
+
+        long count = starbucksCoffee.stream()
+                .filter(c -> c.getName().startsWith("caffee"))
+                .count();
+
 
     }
 }
