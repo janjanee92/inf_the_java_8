@@ -1,26 +1,24 @@
 package com.janjanee;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class App {
 
     public static void main(String[] args) {
-        List<OnlineClass> springClasses = new ArrayList<>();
-        springClasses.add(new OnlineClass(1, "spring boot", true));
-        springClasses.add(new OnlineClass(5, "rest api development", false));
 
-        Optional<OnlineClass> optional = springClasses.stream()
-                .filter(oc -> oc.getTitle().startsWith("spring"))
-                .findFirst();
+        LocalDate today = LocalDate.now();
+        LocalDate nextYearBirthday = LocalDate.of(2022, Month.MARCH, 2);
 
-        //  map
-        Optional<Optional<Progress>> progress = optional.map(OnlineClass::getProgress);
-        Optional<Progress> progress1= progress.orElse(Optional.empty());
+        Period period = Period.between(nextYearBirthday, today);
+        System.out.println("생일까지 " + period.getYears() + "년" + period.getMonths() + "개월" + period.getDays() + "일 남았습니다.");
 
-        //  flatMap
-        Optional<Progress> progress2 = optional.flatMap(OnlineClass::getProgress);
+
+        LocalDate teacherDay = LocalDate.of(2021, Month.MAY, 15);
+
+        Period until = today.until(teacherDay);
+        System.out.println("생일까지 " + ChronoUnit.DAYS.between(today, nextYearBirthday) + "일 남았습니다.");
 
     }
 
